@@ -75,6 +75,6 @@ class grassmann_post(object):
     def to_xml(self, path):
         nx.write_graphml_lxml(self.get_nx_graph(), path)
         
-# Exmapl:
+# Example:
 # Gr = grassmann_post(5,3,2)
 # Gr.show()
