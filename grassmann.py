@@ -25,7 +25,12 @@ def get_grassmann_post(n, d, q):
     for W in P:
         elem_labs=[W.basis_matrix() for W in P_list]
     return Poset(data=(set(range(len(P))),relations)), elem_labs
-    
+
+
+# An instantiation of the poset of linear subspaces of dimension <=d of an n-dimensional linear space over the field of q elements.
+# Will include methods of a cell complex such as boundary and coboundary.
+
+
 class grassmann_post(object):
     def __init__(self, n, d, q):
         self.poset, self.elements_labels = get_grassmann_post(n, d, q)
@@ -69,3 +74,7 @@ class grassmann_post(object):
         
     def to_xml(self, path):
         nx.write_graphml_lxml(self.get_nx_graph(), path)
+        
+# Exmapl:
+# Gr = grassmann_post(5,3,2)
+# Gr.show()
