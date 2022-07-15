@@ -61,6 +61,19 @@ class grassmann_post(object):
                     g[i] += 1
         return g % f
     
+    def get_couboundary_matrix(self, i):
+        domain = self.poset.level_sets()[i]
+        target = self.poset.level_sets()[i+1]
+        d = len(domain)
+        l = len(target)
+        g = np.zeros(shape=(l,d), dtype=int)
+        for k in range(d):
+            S = self.poset.upper_covers(domain[k])
+            for j in range(l):
+                if S.count(target[j]) > 0:
+                    g[j][k] += 1
+        return g % 2
+    
     def get_hasse_diag(self):
         return self.poset.hasse_diagram()
     
