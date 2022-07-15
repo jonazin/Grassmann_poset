@@ -34,6 +34,11 @@ def get_grassmann_post(n, d, q):
 class grassmann_post(object):
     def __init__(self, n, d, q):
         self.poset, self.elements_labels = get_grassmann_post(n, d, q)
+        self.field_size = q
+        self.coboundary_coeficients = 3 if q == 2 else 2
+        self.top_rank = d-1
+        for i in range(self.top_rank):
+            assert not np.any(np.matmul(self.get_couboundary_matrix(i+1), self.get_couboundary_matrix(i)) % Gr.coboundary_coeficients),  "problem with the coboundary operators: delta_{}*delta_{} != 0".format(i+1,i)
     
     def show(self):
         self.poset.show(element_labels=self.get_elements_labels())
@@ -72,7 +77,7 @@ class grassmann_post(object):
             for j in range(l):
                 if S.count(target[j]) > 0:
                     g[j][k] += 1
-        return g % 2
+        return g % self.coboundary_coeficients
     
     def get_hasse_diag(self):
         return self.poset.hasse_diagram()
