@@ -16,7 +16,7 @@ def build_grassmann_poset(n, d, q):
     for i in range(d+1):
         P_by_dims[i] = set(V.subspaces(i))
         P = P.union(P_by_dims[i])
-    print(len(P))
+
 #     expected_size = np.sum([gauss_binom(n,k,q) for k in range(d+1)])
 #     print("the expected poset size is {}".format(expected_size))
 #     for t in itertools.product(V,repeat=d):
@@ -28,12 +28,22 @@ def build_grassmann_poset(n, d, q):
 #         assert P_dim.count(i) == gauss_binom(n,i,q), "got {}, expected {}".format(P_dim.count(i),gauss_binom(n,i,q))
     relations = []
     P_list = list(P)
+#     print(len(P))
+#     print(P_list)
 #     for k in range(d):
 #         for U in P_by_dims[k]:
 #             for W in P_by_dims[k+1]:
-    for i, j in itertools.product(range(len(P)), repeat=2):
-        if (P_list[i].dimension() == (P_list[j].dimension() - 1)) and P_list[i].is_subspace(P_list[j]):
-            relations.append([i, j])
+    dictionary = dict(zip(P_list, list(range(len(P_list)))))
+    for i in range(d,0,-1):
+#         print(i)
+        for W in P_by_dims[i]:
+            l = P_list.index(W)
+            for V in W.subspaces(i-1):
+                k = dictionary[V]
+                relations.append([k, l])
+#     for i, j in itertools.product(range(len(P)), repeat=2):
+#         if (P_list[i].dimension() == (P_list[j].dimension() - 1)) and P_list[i].is_subspace(P_list[j]):
+#             relations.append([i, j])
     elem_labs={}
     for W in P:
         elem_labs=[W.basis_matrix() for W in P_list]
